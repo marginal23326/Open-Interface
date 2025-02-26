@@ -35,6 +35,11 @@ class Settings:
                     os.environ["OPENAI_API_KEY"] = api_key  # Set environment variable
                     encoded_api_key = base64.b64encode(api_key.encode()).decode()
                     settings['api_key'] = encoded_api_key
+                elif setting_name == "gemini_api_key":
+                    gemini_api_key = settings_dict["gemini_api_key"]
+                    os.environ["GEMINI_API_KEY"] = gemini_api_key  # Set environment variable
+                    encoded_gemini_api_key = base64.b64encode(gemini_api_key.encode()).decode()
+                    settings['gemini_api_key'] = encoded_gemini_api_key
                 else:
                     settings[setting_name] = setting_val
 
@@ -49,10 +54,13 @@ class Settings:
                 except:
                     return {}
 
-                # Decode the API key
+                # Decode the API keys
                 if 'api_key' in settings:
                     decoded_api_key = base64.b64decode(settings['api_key']).decode()
                     settings['api_key'] = decoded_api_key
+                if 'gemini_api_key' in settings:
+                    decoded_gemini_api_key = base64.b64decode(settings['gemini_api_key']).decode()
+                    settings['gemini_api_key'] = decoded_gemini_api_key
 
                 return settings
         else:

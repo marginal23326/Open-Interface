@@ -64,6 +64,7 @@ class UI:
                 ('GPT-4o-mini (Cheapest, Fastest)', 'gpt-4o-mini'),
                 ('GPT-4v (Deprecated. Most-Accurate, Slowest)', 'gpt-4-vision-preview'),
                 ('GPT-4-Turbo (Least Accurate, Fast)', 'gpt-4-turbo'),
+                ('Gemini (Google)', 'gemini-2.0-flash'),
                 ('Custom (Specify Settings Below)', 'custom')
             ]
             for text, value in models:
@@ -134,6 +135,12 @@ class UI:
             self.api_key_entry = ttk.Entry(self, width=30)
             self.api_key_entry.pack()
 
+            # Gemini API Key Widgets
+            label_gemini_api = ttk.Label(self, text='Gemini API Key:', bootstyle="info")
+            label_gemini_api.pack(pady=10)
+            self.gemini_api_key_entry = ttk.Entry(self, width=30)
+            self.gemini_api_key_entry.pack()
+
             # Label for Browser Choice
             label_browser = ttk.Label(self, text='Choose Default Browser:', bootstyle="info")
             label_browser.pack(pady=10)
@@ -203,13 +210,24 @@ class UI:
         def save_button(self) -> None:
             theme = self.theme_var.get()
             api_key = self.api_key_entry.get().strip()
+            gemini_api_key = self.gemini_api_key_entry.get().strip()
             default_browser = self.browser_var.get()
+
+            # Access model from AdvancedSettingsWindow if it exists
+            model = None
+            for child in self.master.winfo_children():
+                if isinstance(child, UI.AdvancedSettingsWindow):
+                    model = child.model_var.get() if child.model_var.get() != 'custom' else child.model_entry.get().strip()
+                    break
+
             settings_dict = {
                 'api_key': api_key,
+                'gemini_api_key': gemini_api_key,
                 'default_browser': default_browser,
                 'play_ding_on_completion': bool(self.play_ding.get()),
                 'custom_llm_instructions': self.llm_instructions_text.get("1.0", "end-1c").strip(),
-                'theme': theme
+                'theme': theme,
+                'model': model
             }
 
             # Remove redundant theme change since it's already applied

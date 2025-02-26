@@ -69,6 +69,8 @@ class LLM:
         base_url = base_url.rstrip('/') + '/'
 
         api_key = self.settings_dict.get('api_key')
+        if model_name.startswith('gemini'):
+            api_key = self.settings_dict.get('gemini_api_key')
 
         return model_name, base_url, api_key
 
