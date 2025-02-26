@@ -6,7 +6,7 @@ from utils import local_info
 from utils.screen import Screen
 from utils.settings import Settings
 
-DEFAULT_MODEL_NAME = 'gpt-4o'
+DEFAULT_MODEL_NAME = 'gemini-2.0-flash'
 
 
 class LLM:

@@ -9,8 +9,8 @@ from utils.screen import Screen
 
 class Gemini(Model):
     def __init__(self, model_name, api_key, context):
-        super().__init__(model_name, "https://generativelanguage.googleapis.com/v1beta/openai/", api_key, context)  # base_url is not used in google-genai SDK
-        self.client = genai.Client(api_key=api_key)  # Initialize google-genai Client
+        super().__init__(model_name, api_key, context)
+        self.client = genai.Client(api_key=api_key)
         self.model = "gemini-2.0-flash"
 
     def get_instructions_for_objective(self, original_user_request: str, step_num: int = 0) -> dict[str, Any]:
@@ -32,7 +32,6 @@ class Gemini(Model):
             "step_num": step_num,
         })
 
-        # Create proper Gemini-compatible content parts
         message_content = [
             {"text": self.context + request_data + "\n\nHere is a screenshot of the user's screen:"},
             {"inline_data": {

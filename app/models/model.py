@@ -5,12 +5,10 @@ from google.genai import types
 
 
 class Model:
-    def __init__(self, model_name, base_url, api_key, context):
+    def __init__(self, model_name, api_key, context):
         self.model_name = model_name
-        self.base_url = base_url
         self.api_key = api_key
         self.context = context
-        # client is initialized in Gemini class now
         if api_key:
             os.environ["GOOGLE_API_KEY"] = api_key
 
