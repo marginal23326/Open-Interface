@@ -32,20 +32,20 @@ class Interpreter:
 
         :return: True for successful execution, False for exception while interpreting or executing.
         """
-        function_name = json_command['function']
-        parameters = json_command.get('parameters', {})
-        human_readable_justification = json_command.get('human_readable_justification')
-        print(f'Now performing - {function_name} - {parameters} - {human_readable_justification}')
+        function_name = json_command["function"]
+        parameters = json_command.get("parameters", {})
+        human_readable_justification = json_command.get("human_readable_justification")
+        print(f"Now performing - {function_name} - {parameters} - {human_readable_justification}")
         self.status_queue.put(human_readable_justification)
         try:
             self.execute_function(function_name, parameters)
             return True
         except Exception as e:
-            print(f'\nError:\nWe are having a problem executing this step - {type(e)} - {e}')
-            print(f'This was the json we received from the LLM: {json.dumps(json_command, indent=2)}')
-            print(f'This is what we extracted:')
-            print(f'\t function_name:{function_name}')
-            print(f'\t parameters:{parameters}')
+            print(f"\nError:\nWe are having a problem executing this step - {type(e)} - {e}")
+            print(f"This was the json we received from the LLM: {json.dumps(json_command, indent=2)}")
+            print(f"This is what we extracted:")
+            print(f"\t function_name:{function_name}")
+            print(f"\t parameters:{parameters}")
 
             return False
 
@@ -68,25 +68,25 @@ class Interpreter:
             function_to_call = getattr(pyautogui, function_name)
 
             # Special handling for the 'write' function
-            if function_name == 'write' and ('string' in parameters or 'text' in parameters):
+            if function_name == "write" and ("string" in parameters or "text" in parameters):
                 # 'write' function expects a string, not a 'text' keyword argument but LLM sometimes gets confused on the parameter name.
-                string_to_write = parameters.get('string') or parameters.get('text')
-                interval = parameters.get('interval', 0.1)
+                string_to_write = parameters.get("string") or parameters.get("text")
+                interval = parameters.get("interval", 0.1)
                 function_to_call(string_to_write, interval=interval)
-            elif function_name == 'press' and ('keys' in parameters or 'key' in parameters):
+            elif function_name == "press" and ("keys" in parameters or "key" in parameters):
                 # 'press' can take a list of keys or a single key
-                keys_to_press = parameters.get('keys') or parameters.get('key')
-                presses = parameters.get('presses', 1)
-                interval = parameters.get('interval', 0.2)
+                keys_to_press = parameters.get("keys") or parameters.get("key")
+                presses = parameters.get("presses", 1)
+                interval = parameters.get("interval", 0.2)
                 function_to_call(keys_to_press, presses=presses, interval=interval)
-            elif function_name == 'hotkey':
+            elif function_name == "hotkey":
                 # 'hotkey' function expects multiple key arguments, not a list
                 function_to_call(list(parameters.values()))
             else:
                 # For other functions, pass the parameters as they are
                 function_to_call(**parameters)
         else:
-            print(f'No such function {function_name} in our interface\'s interpreter')
+            print(f"No such function {function_name} in our interface's interpreter")
 
     def execute_command(self, command: str) -> None:
         """

@@ -16,7 +16,7 @@ class GPT4o(Model):
 
         # GPT4o has Assistant Mode enabled that we can utilize to make Open Interface be more contextually aware
         self.assistant = self.client.beta.assistants.create(
-            name='Open Interface Backend',
+            name="Open Interface Backend",
             instructions=self.context,
             model=model_name,
             # tools=[],
@@ -46,25 +46,25 @@ class GPT4o(Model):
     def send_message_to_llm(self, formatted_user_request) -> Message:
         message = self.client.beta.threads.messages.create(
             thread_id=self.thread.id,
-            role='user',
+            role="user",
             content=formatted_user_request
         )
 
         run = self.client.beta.threads.runs.create_and_poll(
             thread_id=self.thread.id,
             assistant_id=self.assistant.id,
-            instructions=''
+            instructions=""
         )
 
-        while run.status != 'completed':
-            print(f'Waiting for response, sleeping for 1. run.status={run.status}')
+        while run.status != "completed":
+            print(f"Waiting for response, sleeping for 1. run.status={run.status}")
             time.sleep(1)
 
-            if run.status == 'failed':
-                print(f'failed run run.required_action:{run.required_action} run.last_error: {run.last_error}\n\n')
+            if run.status == "failed":
+                print(f"failed run run.required_action:{run.required_action} run.last_error: {run.last_error}\n\n")
                 return None
 
-        if run.status == 'completed':
+        if run.status == "completed":
             # NOTE: Apparently right now the API doesn't have a way to retrieve just the last message???
             #  So instead you get all messages and take the latest one
             response = self.client.beta.threads.messages.list(
@@ -73,7 +73,7 @@ class GPT4o(Model):
 
             return response.data[0]
         else:
-            print('Run did not complete successfully.')
+            print("Run did not complete successfully.")
             return None
 
     def upload_screenshot_and_get_file_id(self):
@@ -82,27 +82,27 @@ class GPT4o(Model):
         filepath = Screen().get_screenshot_file()
 
         response = self.client.files.create(
-            file=open(filepath, 'rb'),
-            purpose='vision'
+            file=open(filepath, "rb"),
+            purpose="vision"
         )
         return response.id
 
     def format_user_request_for_llm(self, original_user_request, step_num, openai_screenshot_file_id) -> list[
         dict[str, Any]]:
         request_data: str = json.dumps({
-            'original_user_request': original_user_request,
-            'step_num': step_num
+            "original_user_request": original_user_request,
+            "step_num": step_num
         })
 
         content = [
             {
-                'type': 'text',
-                'text': request_data
+                "type": "text",
+                "text": request_data
             },
             {
-                'type': 'image_file',
-                'image_file': {
-                    'file_id': openai_screenshot_file_id
+                "type": "image_file",
+                "image_file": {
+                    "file_id": openai_screenshot_file_id
                 }
             }
         ]
@@ -114,13 +114,13 @@ class GPT4o(Model):
 
         # Our current LLM model does not guarantee a JSON response hence we manually parse the JSON part of the response
         # Check for updates here - https://platform.openai.com/docs/guides/text-generation/json-mode
-        start_index = llm_response_data.find('{')
-        end_index = llm_response_data.rfind('}')
+        start_index = llm_response_data.find("{")
+        end_index = llm_response_data.rfind("}")
 
         try:
             json_response = json.loads(llm_response_data[start_index:end_index + 1].strip())
         except Exception as e:
-            print(f'Error while parsing JSON response - {e}')
+            print(f"Error while parsing JSON response - {e}")
             json_response = {}
 
         return json_response

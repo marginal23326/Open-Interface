@@ -33,7 +33,7 @@ class UI:
 
         def __init__(self, parent):
             super().__init__(parent)
-            self.title('Advanced Settings')
+            self.title("Advanced Settings")
             self.minsize(300, 300)
             self.settings = Settings()
             self.create_widgets()
@@ -41,37 +41,37 @@ class UI:
             # Populate UI
             settings_dict = self.settings.get_dict()
 
-            if 'base_url' in settings_dict:
-                self.base_url_entry.insert(0, settings_dict['base_url'])
-            if 'model' in settings_dict:
-                self.model_entry.insert(0, settings_dict['model'])
-                self.model_var.set(settings_dict.get('model', 'custom'))
+            if "base_url" in settings_dict:
+                self.base_url_entry.insert(0, settings_dict["base_url"])
+            if "model" in settings_dict:
+                self.model_entry.insert(0, settings_dict["model"])
+                self.model_var.set(settings_dict.get("model", "custom"))
             else:
                 self.model_entry.insert(0, DEFAULT_MODEL_NAME)
                 self.model_var.set(DEFAULT_MODEL_NAME)
 
         def create_widgets(self) -> None:
             # Radio buttons for model selection
-            ttk.Label(self, text='Select Model:', bootstyle="primary").pack(pady=10, padx=10)
-            self.model_var = ttk.StringVar(value='custom')  # default selection
+            ttk.Label(self, text="Select Model:", bootstyle="primary").pack(pady=10, padx=10)
+            self.model_var = ttk.StringVar(value="custom")  # default selection
 
             # Create a frame to hold the radio buttons
             radio_frame = ttk.Frame(self)
             radio_frame.pack(padx=20, pady=10)  # Add padding around the frame
 
             models = [
-                ('GPT-4o (Default. Medium-Accurate, Medium-Fast)', 'gpt-4o'),
-                ('GPT-4o-mini (Cheapest, Fastest)', 'gpt-4o-mini'),
-                ('GPT-4v (Deprecated. Most-Accurate, Slowest)', 'gpt-4-vision-preview'),
-                ('GPT-4-Turbo (Least Accurate, Fast)', 'gpt-4-turbo'),
-                ('Gemini (Google)', 'gemini-2.0-flash'),
-                ('Custom (Specify Settings Below)', 'custom')
+                ("GPT-4o (Default. Medium-Accurate, Medium-Fast)", "gpt-4o"),
+                ("GPT-4o-mini (Cheapest, Fastest)", "gpt-4o-mini"),
+                ("GPT-4v (Deprecated. Most-Accurate, Slowest)", "gpt-4-vision-preview"),
+                ("GPT-4-Turbo (Least Accurate, Fast)", "gpt-4-turbo"),
+                ("Gemini (Google)", "gemini-2.0-flash"),
+                ("Custom (Specify Settings Below)", "custom")
             ]
             for text, value in models:
                 ttk.Radiobutton(radio_frame, text=text, value=value, variable=self.model_var, bootstyle="info").pack(
                     anchor=ttk.W, pady=5)
 
-            label_base_url = ttk.Label(self, text='Custom OpenAI-Like API Model Base URL', bootstyle="secondary")
+            label_base_url = ttk.Label(self, text="Custom OpenAI-Like API Model Base URL", bootstyle="secondary")
             label_base_url.pack(pady=10)
 
             # Entry for Base URL
@@ -79,7 +79,7 @@ class UI:
             self.base_url_entry.pack()
 
             # Model Label
-            label_model = ttk.Label(self, text='Custom Model Name:', bootstyle="secondary")
+            label_model = ttk.Label(self, text="Custom Model Name:", bootstyle="secondary")
             label_model.pack(pady=10)
 
             # Entry for Model
@@ -87,15 +87,15 @@ class UI:
             self.model_entry.pack()
 
             # Save Button
-            save_button = ttk.Button(self, text='Save Settings', bootstyle="success", command=self.save_button)
+            save_button = ttk.Button(self, text="Save Settings", bootstyle="success", command=self.save_button)
             save_button.pack(pady=20)
 
         def save_button(self) -> None:
             base_url = self.base_url_entry.get().strip()
-            model = self.model_var.get() if self.model_var.get() != 'custom' else self.model_entry.get().strip()
+            model = self.model_var.get() if self.model_var.get() != "custom" else self.model_entry.get().strip()
             settings_dict = {
-                'base_url': base_url,
-                'model': model,
+                "base_url": base_url,
+                "model": model,
             }
 
             self.settings.save_settings_to_file(settings_dict)
@@ -108,9 +108,9 @@ class UI:
 
         def __init__(self, parent):
             super().__init__(parent)
-            self.title('Settings')
+            self.title("Settings")
             self.minsize(300, 450)
-            self.available_themes = ['darkly', 'cyborg', 'journal', 'solar', 'superhero']
+            self.available_themes = ["darkly", "cyborg", "journal", "solar", "superhero"]
             self.create_widgets()
 
             self.settings = Settings()
@@ -118,42 +118,42 @@ class UI:
             # Populate UI
             settings_dict = self.settings.get_dict()
 
-            if 'api_key' in settings_dict:
-                self.api_key_entry.insert(0, settings_dict['api_key'])
-            if 'default_browser' in settings_dict:
-                self.browser_combobox.set(settings_dict['default_browser'])
-            if 'play_ding_on_completion' in settings_dict:
-                self.play_ding.set(1 if settings_dict['play_ding_on_completion'] else 0)
-            if 'custom_llm_instructions':
-                self.llm_instructions_text.insert('1.0', settings_dict['custom_llm_instructions'])
-            self.theme_combobox.set(settings_dict.get('theme', 'superhero'))
+            if "api_key" in settings_dict:
+                self.api_key_entry.insert(0, settings_dict["api_key"])
+            if "default_browser" in settings_dict:
+                self.browser_combobox.set(settings_dict["default_browser"])
+            if "play_ding_on_completion" in settings_dict:
+                self.play_ding.set(1 if settings_dict["play_ding_on_completion"] else 0)
+            if "custom_llm_instructions":
+                self.llm_instructions_text.insert("1.0", settings_dict["custom_llm_instructions"])
+            self.theme_combobox.set(settings_dict.get("theme", "superhero"))
 
         def create_widgets(self) -> None:
             # API Key Widgets
-            label_api = ttk.Label(self, text='OpenAI API Key:', bootstyle="info")
+            label_api = ttk.Label(self, text="OpenAI API Key:", bootstyle="info")
             label_api.pack(pady=10)
             self.api_key_entry = ttk.Entry(self, width=30)
             self.api_key_entry.pack()
 
             # Gemini API Key Widgets
-            label_gemini_api = ttk.Label(self, text='Gemini API Key:', bootstyle="info")
+            label_gemini_api = ttk.Label(self, text="Gemini API Key:", bootstyle="info")
             label_gemini_api.pack(pady=10)
             self.gemini_api_key_entry = ttk.Entry(self, width=30)
             self.gemini_api_key_entry.pack()
 
             # Label for Browser Choice
-            label_browser = ttk.Label(self, text='Choose Default Browser:', bootstyle="info")
+            label_browser = ttk.Label(self, text="Choose Default Browser:", bootstyle="info")
             label_browser.pack(pady=10)
 
             # Dropdown for Browser Choice
             self.browser_var = ttk.StringVar()
             self.browser_combobox = ttk.Combobox(self, textvariable=self.browser_var,
-                                                 values=['Safari', 'Firefox', 'Chrome'])
+                                                 values=["Safari", "Firefox", "Chrome"])
             self.browser_combobox.pack(pady=5)
-            self.browser_combobox.set('Choose Browser')
+            self.browser_combobox.set("Choose Browser")
 
             # Label for Custom LLM Guidance
-            label_llm = ttk.Label(self, text='Custom LLM Guidance:', bootstyle="info")
+            label_llm = ttk.Label(self, text="Custom LLM Guidance:", bootstyle="info")
             label_llm.pack(pady=10)
 
             # Text Box for Custom LLM Instructions
@@ -167,39 +167,39 @@ class UI:
             play_ding_checkbox.pack(pady=10)
 
             # Theme Selection Widgets
-            label_theme = ttk.Label(self, text='UI Theme:', bootstyle="info")
+            label_theme = ttk.Label(self, text="UI Theme:", bootstyle="info")
             label_theme.pack()
             self.theme_var = ttk.StringVar()
             self.theme_combobox = ttk.Combobox(self, textvariable=self.theme_var, values=self.available_themes,
                                                state="readonly")
             self.theme_combobox.pack(pady=5)
-            self.theme_combobox.set('superhero')
+            self.theme_combobox.set("superhero")
             # Add binding for immediate theme change
-            self.theme_combobox.bind('<<ComboboxSelected>>', self.on_theme_change)
+            self.theme_combobox.bind("<<ComboboxSelected>>", self.on_theme_change)
 
             # Save Button
-            save_button = ttk.Button(self, text='Save Settings', bootstyle="success", command=self.save_button)
+            save_button = ttk.Button(self, text="Save Settings", bootstyle="success", command=self.save_button)
             save_button.pack(pady=(10, 5))
 
             # Button to open Advanced Settings
-            advanced_settings_button = ttk.Button(self, text='Advanced Settings', bootstyle="info",
+            advanced_settings_button = ttk.Button(self, text="Advanced Settings", bootstyle="info",
                                                   command=self.open_advanced_settings)
             advanced_settings_button.pack(pady=(0, 10))
 
             # Hyperlink Label
-            link_label = ttk.Label(self, text='Setup Instructions', bootstyle="primary")
+            link_label = ttk.Label(self, text="Setup Instructions", bootstyle="primary")
             link_label.pack()
-            link_label.bind('<Button-1>', lambda e: open_link(
-                'https://github.com/AmberSahdev/Open-Interface?tab=readme-ov-file#setup-%EF%B8%8F'))
+            link_label.bind("<Button-1>", lambda e: open_link(
+                "https://github.com/AmberSahdev/Open-Interface?tab=readme-ov-file#setup-%EF%B8%8F"))
 
             # Check for updates Label
-            update_label = ttk.Label(self, text='Check for Updates', bootstyle="primary")
+            update_label = ttk.Label(self, text="Check for Updates", bootstyle="primary")
             update_label.pack()
-            update_label.bind('<Button-1>', lambda e: open_link(
-                'https://github.com/AmberSahdev/Open-Interface/releases/latest'))
+            update_label.bind("<Button-1>", lambda e: open_link(
+                "https://github.com/AmberSahdev/Open-Interface/releases/latest"))
 
             # Version Label
-            version_label = ttk.Label(self, text=f'Version: {str(version)}', font=('Helvetica', 10))
+            version_label = ttk.Label(self, text=f"Version: {str(version)}", font=("Helvetica", 10))
             version_label.pack(side="bottom", pady=10)
 
         def on_theme_change(self, event=None) -> None:
@@ -217,17 +217,17 @@ class UI:
             model = None
             for child in self.master.winfo_children():
                 if isinstance(child, UI.AdvancedSettingsWindow):
-                    model = child.model_var.get() if child.model_var.get() != 'custom' else child.model_entry.get().strip()
+                    model = child.model_var.get() if child.model_var.get() != "custom" else child.model_entry.get().strip()
                     break
 
             settings_dict = {
-                'api_key': api_key,
-                'gemini_api_key': gemini_api_key,
-                'default_browser': default_browser,
-                'play_ding_on_completion': bool(self.play_ding.get()),
-                'custom_llm_instructions': self.llm_instructions_text.get("1.0", "end-1c").strip(),
-                'theme': theme,
-                'model': model
+                "api_key": api_key,
+                "gemini_api_key": gemini_api_key,
+                "default_browser": default_browser,
+                "play_ding_on_completion": bool(self.play_ding.get()),
+                "custom_llm_instructions": self.llm_instructions_text.get("1.0", "end-1c").strip(),
+                "theme": theme,
+                "model": model
             }
 
             # Remove redundant theme change since it's already applied
@@ -245,14 +245,14 @@ class UI:
         def __init__(self):
             settings = Settings()
             settings_dict = settings.get_dict()
-            theme = settings_dict.get('theme', 'superhero')
+            theme = settings_dict.get("theme", "superhero")
 
             try:
                 super().__init__(themename=theme)
             except:
-                super().__init__()  # https://github.com/AmberSahdev/Open-Interface/issues/35  
+                super().__init__()  # https://github.com/AmberSahdev/Open-Interface/issues/35
 
-            self.title('Open Interface')
+            self.title("Open Interface")
             window_width = 450
             window_height = 270
             self.minsize(window_width, window_height)
@@ -262,16 +262,16 @@ class UI:
             screen_width = self.winfo_screenwidth()
             x_position = screen_width - window_width - 10  # 10px margin from the right edge
             y_position = 50  # 50px margin from the bottom edge
-            self.geometry(f'{window_width}x{window_height}+{x_position}+{y_position}')
+            self.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
 
             # PhotoImage object needs to persist as long as the app does, hence it's a class object.
-            path_to_icon_png = Path(__file__).resolve().parent.joinpath('resources', 'icon.png')
+            path_to_icon_png = Path(__file__).resolve().parent.joinpath("resources", "icon.png")
             # path_to_microphone_png = Path(__file__).resolve().parent.joinpath('resources', 'microphone.png')
             self.logo_img = ImageTk.PhotoImage(Image.open(path_to_icon_png).resize((50, 50)))
             # self.mic_icon = ImageTk.PhotoImage(Image.open(path_to_microphone_png).resize((18, 18)))
 
             # This adds app icon in linux which pyinstaller can't
-            self.tk.call('wm', 'iconphoto', self._w, self.logo_img)
+            self.tk.call("wm", "iconphoto", self._w, self.logo_img)
 
             # MP Queue to facilitate communication between UI and Core.
             # Put user requests received from UI text box into this queue which will then be dequeued in App to be sent
@@ -283,7 +283,7 @@ class UI:
         def create_widgets(self) -> None:
             # Creates and arranges the UI elements
             # Frame
-            frame = ttk.Frame(self, padding='10 10 10 10')
+            frame = ttk.Frame(self, padding="10 10 10 10")
             frame.grid(column=0, row=0, sticky=(ttk.W, ttk.E, ttk.N, ttk.S))
             frame.columnconfigure(0, weight=1)
 
@@ -291,7 +291,7 @@ class UI:
             logo_label.grid(column=0, row=0, sticky=ttk.W, pady=(10, 20))
 
             # Heading Label
-            heading_label = ttk.Label(frame, text='What would you like me to do?', font=('Helvetica', 16),
+            heading_label = ttk.Label(frame, text="What would you like me to do?", font=("Helvetica", 16),
                                       bootstyle="primary",
                                       wraplength=300)
             heading_label.grid(column=0, row=1, columnspan=3, sticky=ttk.W)
@@ -309,23 +309,23 @@ class UI:
             # mic_button.grid(column=1, row=2, padx=(0, 5))
 
             # Submit Button
-            button = ttk.Button(frame, text='Submit', bootstyle="success", command=self.execute_user_request)
+            button = ttk.Button(frame, text="Submit", bootstyle="success", command=self.execute_user_request)
             button.grid(column=2, row=2, padx=10)
 
             # Settings Button
-            settings_button = ttk.Button(self, text='Settings', bootstyle="info-outline", command=self.open_settings)
-            settings_button.place(relx=1.0, rely=0.0, anchor='ne', x=-5, y=5)
+            settings_button = ttk.Button(self, text="Settings", bootstyle="info-outline", command=self.open_settings)
+            settings_button.place(relx=1.0, rely=0.0, anchor="ne", x=-5, y=5)
 
             # Stop Button
-            stop_button = ttk.Button(self, text='Stop', bootstyle="danger-outline", command=self.stop_previous_request)
-            stop_button.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
+            stop_button = ttk.Button(self, text="Stop", bootstyle="danger-outline", command=self.stop_previous_request)
+            stop_button.place(relx=1.0, rely=1.0, anchor="se", x=-10, y=-10)
 
             # Text display for echoed input
-            self.input_display = ttk.Label(frame, text='', font=('Helvetica', 16), wraplength=400)
+            self.input_display = ttk.Label(frame, text="", font=("Helvetica", 16), wraplength=400)
             self.input_display.grid(column=0, row=3, columnspan=3, sticky=ttk.W)
 
             # Text display for additional messages
-            self.message_display = ttk.Label(frame, text='', font=('Helvetica', 14), wraplength=400)
+            self.message_display = ttk.Label(frame, text="", font=("Helvetica", 14), wraplength=400)
             self.message_display.grid(column=0, row=6, columnspan=3, sticky=ttk.W)
 
         def open_settings(self) -> None:
@@ -333,7 +333,7 @@ class UI:
 
         def stop_previous_request(self) -> None:
             # Interrupt currently running request by queueing a stop signal.
-            self.user_request_queue.put('stop')
+            self.user_request_queue.put("stop")
 
             # force quit program
             self.destroy()
@@ -341,7 +341,7 @@ class UI:
         def display_input(self) -> str:
             # Get the entry and update the input display
             user_input = self.entry.get()
-            self.input_display['text'] = f'{user_input}'
+            self.input_display["text"] = f"{user_input}"
 
             # Clear the entry widget
             self.entry.delete(0, ttk.END)
@@ -352,10 +352,10 @@ class UI:
             # Puts the user request received from the UI into the MP queue being read in App to be sent to Core.
             user_request = self.display_input()
 
-            if user_request == '' or user_request is None:
+            if user_request == "" or user_request is None:
                 return
 
-            self.update_message('Fetching Instructions')
+            self.update_message("Fetching Instructions")
 
             self.user_request_queue.put(user_request)
 
@@ -392,6 +392,6 @@ class UI:
             # Update the message display with the provided text.
             # Ensure thread safety when updating the Tkinter GUI.
             if threading.current_thread() is threading.main_thread():
-                self.message_display['text'] = message
+                self.message_display["text"] = message
             else:
                 self.message_display.after(0, lambda: self.message_display.config(text=message))

@@ -31,12 +31,12 @@ final_clip = final_clip.fx(vfx.speedx, 2)  # 2x speed
 
 # Write the result to a file
 output_video = video_name + "_2x.mov"
-final_clip.write_videofile(output_video, codec='libx264')
+final_clip.write_videofile(output_video, codec="libx264")
 
 # Generate palette for high-quality GIF
-os.system(f"ffmpeg -i {output_video} -vf \"fps=10,scale=1080:-1:flags=bicubic,palettegen\" -y palette.png")
+os.system(f'ffmpeg -i {output_video} -vf "fps=10,scale=1080:-1:flags=bicubic,palettegen" -y palette.png')
 
 # Create the GIF using the generated palette
 output_gif = video_name + "_2x.gif"
 os.system(f"rm {output_gif}")
-os.system(f"ffmpeg -i {output_video} -i palette.png -lavfi \"fps=10,scale=1080:-1:flags=bicubic [x]; [x][1:v] paletteuse\" {output_gif}")
+os.system(f'ffmpeg -i {output_video} -i palette.png -lavfi "fps=10,scale=1080:-1:flags=bicubic [x]; [x][1:v] paletteuse" {output_gif}')

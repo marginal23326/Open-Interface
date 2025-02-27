@@ -7,8 +7,7 @@ from ui import UI
 
 
 class App:
-    """
-    +----------------------------------------------------+
+    """+----------------------------------------------------+
     | App                                                |
     |                                                    |
     |    +-------+                                       |
@@ -52,15 +51,15 @@ class App:
     def send_status_from_core_to_ui(self) -> None:
         while True:
             status: str = self.core.status_queue.get()
-            print(f'Sending status: {status}')
+            print(f"Sending status: {status}")
             self.ui.display_current_status(status)
 
     def send_user_request_from_ui_to_core(self) -> None:
         while True:
             user_request: str = self.ui.main_window.user_request_queue.get()
-            print(f'Sending user request: {user_request}')
+            print(f"Sending user request: {user_request}")
 
-            if user_request == 'stop':
+            if user_request == "stop":
                 self.core.stop_previous_request()
 
                 # ensures all threads are joined before force quit (my code)
@@ -68,7 +67,7 @@ class App:
                     for thread in threading.enumerate():
                         if thread != threading.main_thread():
                             thread.join(timeout=2)
-                except Exception as e:
+                except Exception:
                     continue
 
             else:
@@ -78,7 +77,7 @@ class App:
         self.core.cleanup()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     freeze_support()  # As required by pyinstaller https://www.pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing
     app = App()
     app.run()

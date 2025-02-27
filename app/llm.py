@@ -6,7 +6,7 @@ from utils import local_info
 from utils.screen import Screen
 from utils.settings import Settings
 
-DEFAULT_MODEL_NAME = 'gemini-2.0-flash'
+DEFAULT_MODEL_NAME = "gemini-2.0-flash"
 
 
 class LLM:
@@ -59,36 +59,36 @@ class LLM:
         self.model = ModelFactory.create_model(self.model_name, base_url, api_key, context)
 
     def get_settings_values(self) -> tuple[str, str, str]:
-        model_name = self.settings_dict.get('model')
+        model_name = self.settings_dict.get("model")
         if not model_name:
             model_name = DEFAULT_MODEL_NAME
 
-        base_url = self.settings_dict.get('base_url', '')
+        base_url = self.settings_dict.get("base_url", "")
         if not base_url:
-            base_url = 'https://api.openai.com/v1/'
-        base_url = base_url.rstrip('/') + '/'
+            base_url = "https://api.openai.com/v1/"
+        base_url = base_url.rstrip("/") + "/"
 
-        api_key = self.settings_dict.get('api_key')
-        if model_name.startswith('gemini'):
-            api_key = self.settings_dict.get('gemini_api_key')
+        api_key = self.settings_dict.get("api_key")
+        if model_name.startswith("gemini"):
+            api_key = self.settings_dict.get("gemini_api_key")
 
         return model_name, base_url, api_key
 
     def read_context_txt_file(self) -> str:
         # Construct context for the assistant by reading context.txt and adding extra system information
-        context = ''
-        path_to_context_file = Path(__file__).resolve().parent.joinpath('resources', 'context.txt')
-        with open(path_to_context_file, 'r') as file:
+        context = ""
+        path_to_context_file = Path(__file__).resolve().parent.joinpath("resources", "context.txt")
+        with open(path_to_context_file, "r") as file:
             context += file.read()
 
         context += f' Locally installed apps are {",".join(local_info.locally_installed_apps)}.'
-        context += f' OS is {local_info.operating_system}.'
-        context += f' Primary screen size is {Screen().get_size()}.\n'
+        context += f" OS is {local_info.operating_system}."
+        context += f" Primary screen size is {Screen().get_size()}.\n"
 
-        if 'default_browser' in self.settings_dict.keys() and self.settings_dict['default_browser']:
+        if "default_browser" in self.settings_dict.keys() and self.settings_dict["default_browser"]:
             context += f'\nDefault browser is {self.settings_dict["default_browser"]}.'
 
-        if 'custom_llm_instructions' in self.settings_dict:
+        if "custom_llm_instructions" in self.settings_dict:
             context += f'\nCustom user-added info: {self.settings_dict["custom_llm_instructions"]}.'
 
         return context

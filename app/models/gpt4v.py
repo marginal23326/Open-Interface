@@ -17,17 +17,17 @@ class GPT4v(Model):
         base64_img: str = Screen().get_screenshot_in_base64()
 
         request_data: str = json.dumps({
-            'original_user_request': original_user_request,
-            'step_num': step_num
+            "original_user_request": original_user_request,
+            "step_num": step_num
         })
 
         # We have to add context every request for now which is expensive because our chosen model doesn't have a
         #   stateful/Assistant mode yet.
         message = [
-            {'type': 'text', 'text': self.context + request_data},
-            {'type': 'image_url',
-             'image_url': {
-                 'url': f'data:image/jpeg;base64,{base64_img}'
+            {"type": "text", "text": self.context + request_data},
+            {"type": "image_url",
+             "image_url": {
+                 "url": f"data:image/jpeg;base64,{base64_img}"
              }
              }
         ]
@@ -39,8 +39,8 @@ class GPT4v(Model):
             model=self.model_name,
             messages=[
                 {
-                    'role': 'user',
-                    'content': message,
+                    "role": "user",
+                    "content": message,
                 }
             ],
             max_tokens=800,
@@ -52,13 +52,13 @@ class GPT4v(Model):
 
         # Our current LLM model does not guarantee a JSON response hence we manually parse the JSON part of the response
         # Check for updates here - https://platform.openai.com/docs/guides/text-generation/json-mode
-        start_index = llm_response_data.find('{')
-        end_index = llm_response_data.rfind('}')
+        start_index = llm_response_data.find("{")
+        end_index = llm_response_data.rfind("}")
 
         try:
             json_response = json.loads(llm_response_data[start_index:end_index + 1].strip())
         except Exception as e:
-            print(f'Error while parsing JSON response - {e}')
+            print(f"Error while parsing JSON response - {e}")
             json_response = {}
 
         return json_response

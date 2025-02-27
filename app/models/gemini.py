@@ -17,7 +17,7 @@ class Gemini(Model):
         safety_settings = [
             types.SafetySetting(category=category.value, threshold="BLOCK_NONE")
             for category in types.HarmCategory
-            if category.value != 'HARM_CATEGORY_UNSPECIFIED'
+            if category.value != "HARM_CATEGORY_UNSPECIFIED"
         ]
         message_content = self.format_user_request_for_llm(original_user_request, step_num)
         llm_response = self.send_message_to_llm(self.model, message_content, safety_settings=safety_settings)

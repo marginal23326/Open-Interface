@@ -6,12 +6,12 @@ from pathlib import Path
 
 class Settings:
     def __init__(self):
-        self.settings_file_path = self.get_settings_directory_path() + 'settings.json'
+        self.settings_file_path = self.get_settings_directory_path() + "settings.json"
         os.makedirs(os.path.dirname(self.settings_file_path), exist_ok=True)
         self.settings = self.load_settings_from_file()
 
     def get_settings_directory_path(self):
-        return str(Path.home()) + '/.open-interface/'
+        return str(Path.home()) + "/.open-interface/"
 
     def get_dict(self) -> dict[str, str]:
         return self.settings
@@ -21,7 +21,7 @@ class Settings:
 
         # Preserve previous settings in case new dict doesn't contain them
         if os.path.exists(self.settings_file_path):
-            with open(self.settings_file_path, 'r') as file:
+            with open(self.settings_file_path, "r") as file:
                 try:
                     settings = json.load(file)
                 except:
@@ -34,33 +34,33 @@ class Settings:
                     api_key = settings_dict["api_key"]
                     os.environ["OPENAI_API_KEY"] = api_key  # Set environment variable
                     encoded_api_key = base64.b64encode(api_key.encode()).decode()
-                    settings['api_key'] = encoded_api_key
+                    settings["api_key"] = encoded_api_key
                 elif setting_name == "gemini_api_key":
                     gemini_api_key = settings_dict["gemini_api_key"]
                     os.environ["GEMINI_API_KEY"] = gemini_api_key  # Set environment variable
                     encoded_gemini_api_key = base64.b64encode(gemini_api_key.encode()).decode()
-                    settings['gemini_api_key'] = encoded_gemini_api_key
+                    settings["gemini_api_key"] = encoded_gemini_api_key
                 else:
                     settings[setting_name] = setting_val
 
-        with open(self.settings_file_path, 'w+') as file:
+        with open(self.settings_file_path, "w+") as file:
             json.dump(settings, file, indent=4)
 
     def load_settings_from_file(self) -> dict[str, str]:
         if os.path.exists(self.settings_file_path):
-            with open(self.settings_file_path, 'r') as file:
+            with open(self.settings_file_path, "r") as file:
                 try:
                     settings = json.load(file)
                 except:
                     return {}
 
                 # Decode the API keys
-                if 'api_key' in settings:
-                    decoded_api_key = base64.b64decode(settings['api_key']).decode()
-                    settings['api_key'] = decoded_api_key
-                if 'gemini_api_key' in settings:
-                    decoded_gemini_api_key = base64.b64decode(settings['gemini_api_key']).decode()
-                    settings['gemini_api_key'] = decoded_gemini_api_key
+                if "api_key" in settings:
+                    decoded_api_key = base64.b64decode(settings["api_key"]).decode()
+                    settings["api_key"] = decoded_api_key
+                if "gemini_api_key" in settings:
+                    decoded_gemini_api_key = base64.b64decode(settings["gemini_api_key"]).decode()
+                    settings["gemini_api_key"] = decoded_gemini_api_key
 
                 return settings
         else:
