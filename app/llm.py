@@ -69,6 +69,10 @@ class LLM:
         base_url = base_url.rstrip('/') + '/'
 
         api_key = self.settings_dict.get('api_key')
+        gemini_model = self.settings_dict.get('gemini_model')
+        if model_name.startswith('gemini'):
+            api_key = self.settings_dict.get('gemini_api_key')
+            model_name = gemini_model if gemini_model else 'gemini-2.0-flash' # Default to 'gemini-2.0-flash' if not set
 
         return model_name, base_url, api_key
 
