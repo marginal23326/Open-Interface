@@ -92,11 +92,5 @@ class Interpreter:
         """
         Executes a command on the computer using subprocess.
         """
-        try:
-            subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
-            print(f"Command executed successfully: {command}")
-        except subprocess.CalledProcessError as e:
-            print(f"Error executing command: {command}")
-            print(f"Return code: {e.returncode}")
-            print(f"Output: {e.output}")
-            print(f"Error: {e.stderr}")
+        subprocess.run(command, shell=True)
+        print(f"Command executed: {command}")

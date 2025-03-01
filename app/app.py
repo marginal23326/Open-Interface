@@ -1,3 +1,4 @@
+import argparse
 import sys
 import threading
 from multiprocessing import freeze_support
@@ -80,7 +81,17 @@ class App:
 
 if __name__ == '__main__':
     freeze_support()  # As required by pyinstaller https://www.pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing
-    app = App()
-    app.run()
-    app.cleanup()
-    sys.exit(0)
+
+    parser = argparse.ArgumentParser(description="Open-Interface CLI")
+    parser.add_argument("prompt", nargs='?', help="The prompt for the LLM")
+    args = parser.parse_args()
+
+    if args.prompt:
+        core = Core()
+        core.execute_user_request(args.prompt)
+        core.cleanup()
+    else:
+        app = App()
+        app.run()
+        app.cleanup()
+        sys.exit(0)

@@ -141,7 +141,7 @@ Example Response for a more complex task requiring both command execution and ke
 
 Additional Execute Command Examples:
 1. Text-to-speech to talk/send message to the user:
-   "command": "mshta \"javascript:new ActiveXObject('SAPI.SpVoice').Speak('Your message here');close()\""
+   "command": "C:\speak 'Your message here'"
 
 2. Display message to user:
    "command": "msg * \"Your message here\""
