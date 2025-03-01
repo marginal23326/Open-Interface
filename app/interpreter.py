@@ -2,6 +2,7 @@ import json
 from multiprocessing import Queue
 from time import sleep
 from typing import Any
+import subprocess
 
 import pyautogui
 
@@ -53,11 +54,14 @@ class Interpreter:
             We are expecting only two types of function calls below
             1. time.sleep() - to wait for web pages, applications, and other things to load.
             2. pyautogui calls to interact with system's mouse and keyboard.
+            3. execute_command to execute a command on the computer.
         """
         # Sometimes pyautogui needs warming up i.e. sometimes first call isn't executed hence padding a random call here
         pyautogui.press("command", interval=0.2)
 
-        if function_name == "sleep" and parameters.get("secs"):
+        if function_name == "execute_command" and parameters.get("command"):
+            self.execute_command(parameters["command"])
+        elif function_name == "sleep" and parameters.get("secs"):
             sleep(parameters.get("secs"))
         elif hasattr(pyautogui, function_name):
             # Execute the corresponding pyautogui function i.e. Keyboard or Mouse commands.
@@ -82,4 +86,17 @@ class Interpreter:
                 # For other functions, pass the parameters as they are
                 function_to_call(**parameters)
         else:
-            print(f'No such function {function_name} in our interface\'s interpreter')
+            print(f"No such function {function_name} in our interface's interpreter")
+
+    def execute_command(self, command: str) -> None:
+        """
+        Executes a command on the computer using subprocess.
+        """
+        try:
+            subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
+            print(f"Command executed successfully: {command}")
+        except subprocess.CalledProcessError as e:
+            print(f"Error executing command: {command}")
+            print(f"Return code: {e.returncode}")
+            print(f"Output: {e.output}")
+            print(f"Error: {e.stderr}")
